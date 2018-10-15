@@ -1,5 +1,5 @@
 //server exported in order to close database after tests are done
-const  db  = require('../postgresql.js');
+const db = require('../postgresql.js');
 
 module.exports = {
 
@@ -26,17 +26,17 @@ module.exports = {
    * @param {function} next sends req and res to next middleware
    */
   createPost(req, res, next) {
-    if(Object.keys(req.body).length === 6){
+    if (Object.keys(req.body).length === 6) {
       db.one("INSERT INTO post(createdby, resolvedby, problem, expect, tried, suspect, topic) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *", [req.body.createdby, 0, req.body.problem, req.body.expect, req.body.tried, req.body.suspect, req.body.topic])
-      .then(data => {
-        console.log('data');
-        res.locals.data = data;
-        next();
-      })
-      .catch(err => {
-        next(err);
-      })
-    } else{
+        .then(data => {
+          console.log('data');
+          res.locals.data = data;
+          next();
+        })
+        .catch(err => {
+          next(err);
+        });
+    } else {
       res.status(400).send('Invalid post');
     }
   },
@@ -48,18 +48,18 @@ module.exports = {
    * @param {function} next sends req and res to next middleware
    */
   changeStatus(req, res, next) {
-    if(Object.keys(req.body).length === 3){
-      console.log(req.body);
-      db.one("UPDATE post SET status=$1, resolvedby=$2 WHERE id=$3 RETURNING status", [req.body.status + 1, req.body.userid, req.body.postid])
+    if (Object.keys(req.body).length === 3) {
+      db.one('UPDATE post SET status=$1, resolvedby=$2 WHERE id=$3 RETURNING status', [req.body.status + 1, req.body.userid, req.body.postid])
       .then(data => {
         res.locals.data = data;
         next();
       })
       .catch(err => {
         next(err);
-      })
-    } else{
+      });
+    } else {
       res.status(400).send('Invalid status change');
     }
-  }
-}
+    console.log('req.body: ', req.body);
+  },
+};

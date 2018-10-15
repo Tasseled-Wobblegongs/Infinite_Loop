@@ -25,36 +25,21 @@ class App extends Component {
     this.fetchData = this.fetchData.bind(this);
     this.changeStatus = this.changeStatus.bind(this);
   }
-  changeStatus(userId, postStatus, postId) {
-    fetch('http://localhost:3000/status', {
-      headers: {'Content-Type': 'application/json'},
-      method:'PATCH',
-      body: JSON.stringify({
-        status: postStatus,
-        postid: postId,
-        userid: userId,
-      })
-    })
-    .then(()=> {
-      this.fetchData();
-    })
-    .catch(err => console.log(err));
-  }
-
+  
   onSignupChangedHandler(event) {
     const newState = Object.assign({}, this.state);
     newState.role = event.currentTarget.value;
     console.log(newState.role);
     this.setState(newState);
   }
-
+  
   onSignupNameChangeHandler(event) {
     const newState = Object.assign({}, this.state);
     newState.name = event.target.value;
     console.log(newState.name);
     this.setState(newState);
   }
-
+  
   onSignupSubmitHandler() {
     fetch('http://localhost:3000/createuser', {
       method: 'POST',
@@ -62,23 +47,39 @@ class App extends Component {
         name: this.state.name,
         role: this.state.role,
       }),
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
     })
-      .then(data => data.json())
-      .then(data => {
-        this.onLoginHandler(data.id);
-      })
-      .then(() => this.fetchData())
-      .catch(err => {
-        console.log(err);
-      })
+    .then(data => data.json())
+    .then(data => {
+      this.onLoginHandler(data.id);
+    })
+    .then(() => this.fetchData())
+    .catch(err => {
+      console.log(err);
+    })
   }
-
+  
   onLoginHandler(userid) {
     const newState = Object.assign({}, this.state);
     newState.loggedIn = true;
     newState.userid = userid;
     this.setState(newState);
+  }
+  
+  changeStatus(userId, postStatus, postId) {
+    fetch('http://localhost:3000/status', {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'PATCH',
+      body: JSON.stringify({
+        status: postStatus,
+        postid: postId,
+        userid: userId,
+      })
+    })
+      .then(() => {
+        this.fetchData();
+      })
+      .catch(err => console.log(err));
   }
 
   fetchData() {
@@ -87,39 +88,40 @@ class App extends Component {
     const closed = [];
     fetch('http://localhost:3000/home', {
       method: 'GET',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
     })
-    .then(posts => posts.json())
-    .then(posts => {
-      posts.forEach((post) => {
-        console.log(post);
-        if (post.status === 'open') {
-          notStarted.push(post)
-        }
-        if (post.status === 'claimed') {
-          inProgress.push(post)
-        }
-        if (post.status === 'closed') {
-          closed.push(post)
-        }
+      .then(posts => posts.json())
+      .then(posts => {
+        posts.forEach((post) => {
+          console.log(post);
+          if (post.status === 'open') {
+            notStarted.push(post)
+          }
+          if (post.status === 'claimed') {
+            inProgress.push(post)
+          }
+          if (post.status === 'closed') {
+            closed.push(post)
+          }
+        })
+        const newState = Object.assign({}, this.state);
+        newState.notStarted = notStarted;
+        newState.inProgress = inProgress;
+        newState.closed = closed;
+        this.setState(newState);
       })
-      const newState = Object.assign({}, this.state);
-      newState.notStarted = notStarted;
-      newState.inProgress = inProgress;
-      newState.closed = closed;
-      this.setState(newState);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+      .catch((err) => {
+        console.log(err);
+      });
   }
+
   render() {
     const { name, notStarted, inProgress, closed, role, loggedIn, userid } = this.state;
     let render = [];
     if (loggedIn) render.push(<div>
-                                <CreateSection userid = {userid} fetchData = {this.fetchData} />
-                                <PostSection changeStatus = {this.changeStatus} name={name} notStarted={notStarted} inProgress={inProgress} closed={closed} role={role} />
-                              </div>);
+      <CreateSection userid={userid} fetchData={this.fetchData} />
+      <PostSection changeStatus={this.changeStatus} name={name} notStarted={notStarted} inProgress={inProgress} closed={closed} role={role} />
+    </div>);
     return (
       <div>
         <Signup

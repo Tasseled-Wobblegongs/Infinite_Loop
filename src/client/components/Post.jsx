@@ -2,9 +2,9 @@ import React from 'react';
 
 const Post = (props) => {
   //user info
-  const { name, role} = props;
+  const { name, role } = props;
   //post info
-  const { createdBy, resolvedBy, problem, expect, tried, suspect, topic, status, helperid, studentid, statusid, postid} = props;
+  const { createdBy, resolvedBy, problem, expect, tried, suspect, topic, status, helperid, studentid, statusid, postid } = props;
   //eventHandlers
   const { changeStatus } = props;
 
@@ -20,7 +20,7 @@ const Post = (props) => {
     },
     pStyle: {
       margin: '0px',
-      padding:'3px',
+      padding: '3px',
       fontSize: '.7em'
     },
     h2Style: {
@@ -28,23 +28,23 @@ const Post = (props) => {
     }
   }
 
-  return(
-    <div style = {style.post}>
+  return (
+    <div style={style.post}>
       <div className='ledger'>
         <p style={style.pStyle}>Created By: {createdBy}</p>
         <p style={style.pStyle}>Resolved By: {resolvedBy}</p>
       </div>
       <h2 style={style.h2Style}>Problem:</h2>
-        <p style={style.pStyle}>{problem}</p>
+      <p style={style.pStyle}>{problem}</p>
       <h2 style={style.h2Style}>Expect:</h2>
-        <p style={style.pStyle}>{expect}</p>
+      <p style={style.pStyle}>{expect}</p>
       <h2 style={style.h2Style}>Tried:</h2>
-        <p style={style.pStyle}>{tried}</p>
+      <p style={style.pStyle}>{tried}</p>
       <h2 style={style.h2Style}>Suspect:</h2>
-        <p style={style.pStyle}>{suspect}</p>
+      <p style={style.pStyle}>{suspect}</p>
       <div className='footer'>
         <div>topic</div>
-        <button className='statusButton' onClick={() => {changeStatus(studentid, statusid, postid)}  }> {status} </button>
+        <button className='statusButton' onClick={() => { changeStatus(studentid, statusid, postid) }}> {status} </button>
       </div>
     </div>
   )
