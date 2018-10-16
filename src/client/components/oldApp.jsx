@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
+import PostSection from './PostSection.jsx';
+import Signup from './Signup.jsx';
+import CreateSection from './CreateSection.jsx';
+import { connect } from 'react-redux';
+import * as actions from '../actions/actions'
+const mapStateToProps = store => ({
 
-import PostSection from './components/PostSection.jsx';
-import Signup from './components/Signup.jsx';
-import CreateSection from './components/CreateSection.jsx';
+})
+const mapDispatchToProps = dispatch => ({
+  
+})
 
 class App extends Component {
   constructor(props) {
@@ -25,6 +32,7 @@ class App extends Component {
     this.fetchData = this.fetchData.bind(this);
     this.changeStatus = this.changeStatus.bind(this);
   }
+<<<<<<< HEAD:src/client/App.jsx
   
   onSignupChangedHandler(event) {
     const newState = Object.assign({}, this.state);
@@ -40,6 +48,38 @@ class App extends Component {
     this.setState(newState);
   }
   
+=======
+  changeStatus(userId, postStatus, postId) {
+    fetch('http://localhost:3000/status', {
+      headers: {'Content-Type': 'application/json'},
+      method:'PATCH',
+      body: JSON.stringify({
+        status: postStatus,
+        postid: postId,
+        userid: userId,
+      })
+    })
+    .then(()=> {
+      this.fetchData();
+    })
+    .catch(err => console.log(err));
+  }
+
+  // onSignupChangedHandler(event) {
+  //   const newState = Object.assign({}, this.state);
+  //   newState.role = event.currentTarget.value;
+  //   console.log(newState.role);
+  //   this.setState(newState);
+  // }
+
+  // onSignupNameChangeHandler(event) {
+  //   const newState = Object.assign({}, this.state);
+  //   newState.name = event.target.value;
+  //   console.log(newState.name);
+  //   this.setState(newState);
+  // }
+
+>>>>>>> 1e8e4cbb173c7face9f7ed05b29e8aaaf4f535e2:src/client/components/oldApp.jsx
   onSignupSubmitHandler() {
     fetch('http://localhost:3000/createuser', {
       method: 'POST',
