@@ -27,25 +27,16 @@ module.exports = {
    */
   createPost(req, res, next) {
     if (Object.keys(req.body).length === 6) {
-<<<<<<< HEAD
-      db.one("INSERT INTO post(createdby, resolvedby, problem, expect, tried, suspect, topic) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *", [req.body.createdby, 0, req.body.problem, req.body.expect, req.body.tried, req.body.suspect, req.body.topic])
-=======
       db.one("INSERT INTO posts(student_id, problem, expect, tried, suspect, topic) VALUES($1, $2, $3, $4, $5, $6) RETURNING *", [req.body.user_id, req.body.problem, req.body.expect, req.body.tried, req.body.suspect, req.body.topic])
->>>>>>> b025ccfd22e9142f00b43efabff20eff4c326738
         .then(data => {
           console.log('data');
           res.locals.data = data;
           next();
         })
         .catch(err => {
-<<<<<<< HEAD
-          next(err);
-        });
-=======
           console.log(err);
           next(err);
         })
->>>>>>> b025ccfd22e9142f00b43efabff20eff4c326738
     } else {
       res.status(400).send('Invalid post');
     }
@@ -58,19 +49,6 @@ module.exports = {
    * @param {function} next sends req and res to next middleware
    */
   changeStatus(req, res, next) {
-<<<<<<< HEAD
-    if (Object.keys(req.body).length === 3) {
-      db.one('UPDATE post SET status=$1, resolvedby=$2 WHERE id=$3 RETURNING status', [req.body.status + 1, req.body.userid, req.body.postid])
-      .then(data => {
-        res.locals.data = data;
-        next();
-      })
-      .catch(err => {
-        next(err);
-      });
-    } else {
-      res.status(400).send('Invalid status change');
-=======
     if (Object.keys(req.body).length === 4) {
       if (req.body.role === 2) {
         db.one("UPDATE posts SET status=$1, helper_id=$2 WHERE post_id=$3 RETURNING *", [req.body.status + 1, req.body.user_id, req.body.post_id])
@@ -84,7 +62,6 @@ module.exports = {
       } else {
         res.status(400).send('Invalid status change');
       }
->>>>>>> b025ccfd22e9142f00b43efabff20eff4c326738
     }
     console.log('req.body: ', req.body);
   },

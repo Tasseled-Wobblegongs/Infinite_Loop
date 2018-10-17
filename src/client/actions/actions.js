@@ -111,9 +111,8 @@ export const saveLoginInfo = (data) => ({
 //   type: types.CREATE_USERNAME,
 //   payload: event,
 // });
-export const onLoginSubmit = (user, pass) => {
-
-  return function (dispatch) {
+export const onLoginSubmit = (user, pass) => 
+dispatch => {
     return fetch('http://localhost:3000/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json'},
@@ -138,8 +137,7 @@ export const onLoginSubmit = (user, pass) => {
       dispatch(saveLoginInfo(res[0]))
       console.log(res,'res in onLoginSubmit')
       })
-};
-};
+    }
 
 export const signUpSuccess = () => ({
   type: types.ON_SIGNUP_SUCCESS,
@@ -181,7 +179,7 @@ export const onTopic = (event) => ({
   payload: event,
 });
 
-export const changeStatus = (userid, postStatus, postid) => {
+export const changeStatus = (userid, postStatus, postid) => (dispatch) => {
   fetch('http://localhost:3000/status', {
     headers: {'Content-Type': 'application/json'},
     method:'PATCH',
@@ -206,7 +204,7 @@ export const togglePage = () => ({
   type: types.TOGGLE_PAGE,
 });
 
-export const onCreateSectionSubmit = (userid, problem, expect, tried, suspect, topic) => {
+export const onCreateSectionSubmit = (userid, problem, expect, tried, suspect, topic) => (dispatch) => {
   // type: types.ON_CREATESECTION_SUBMIT,
   //payload: TODO: thunk
   return fetch('http://localhost:3000/createpost', {
